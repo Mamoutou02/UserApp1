@@ -1,4 +1,4 @@
-package com.model.userapp1;
+package model;
 
 public class User {
     private String nom;
@@ -16,13 +16,4 @@ public class User {
     public String getEmail() {
         return email;
     }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }
-

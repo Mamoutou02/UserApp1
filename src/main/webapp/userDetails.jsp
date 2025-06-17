@@ -1,36 +1,47 @@
-<%@ page import="com.model.userapp1.User" %>
-<%@ page import="java.util.List" %><%--
-  Created by IntelliJ IDEA.
-  User: BUFALLO
-  Date: 16/06/2025
-  Time: 09:29
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="model.User" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%-- Vérification si l'utilisateur est connecté --%>
-<c:if test="${empty sessionScope.user}">
-    <%-- Redirection vers le formulaire si non connecté --%>
-    <c:redirect url="userForm.jsp"/>
-</c:if>
-
-<!-- Récupération des données depuis la session -->
-<%
-    // Récupération de l'utilisateur courant depuis la session
-    User user = (User) session.getAttribute("user");
-
-    // Récupération de la liste complète des utilisateurs
-    List<User> users = (List<User>) session.getAttribute("usersList");
-%>
-
-<!-- Affichage des informations de l'utilisateur connecté -->
-<h1>Bonjour ${user.nom}!</h1>   <!-- Affichage du nom de l'utilisateur -->
-<p>Email: ${user.email}!</p>    <!-- Affichage de l'email de l'utilisateur -->
-
-<!-- Section liste des utilisateurs -->
-<h2>Utilisateurs enregistrés:</h2>
-<ul>
-    <% // Boucle pour afficher tous les utilisateurs %>
-    <% for (User u : users) {%>
-    <li><%= u.getNom()%> - <%=u.getEmail()%></li> <!-- Ligne par utilisateur -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Détails Utilisateur</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+</head>
+<body>
+<div class="container">
+    <h2>Détails Utilisateur</h2>
+    <% User currentUser = (User) session.getAttribute("user"); %>
+    <% if (currentUser != null) { %>
+    <h3>Votre profil</h3>
+    <table>
+        <tr><th>Nom</th><td><%= currentUser.getNom() %></td></tr>
+        <tr><th>Email</th><td><%= currentUser.getEmail() %></td></tr>
+    </table>
+    <% } else { %>
+    <p>Aucun utilisateur courant.</p>
     <% } %>
-</ul>
+
+    <h3>Liste des utilisateurs</h3>
+    <% List<User> usersList = (List<User>) session.getAttribute("usersList"); %>
+    <% if (usersList != null && !usersList.isEmpty()) { %>
+    <table>
+        <tr><th>#</th><th>Nom</th><th>Email</th></tr>
+        <% for (int i = 0; i < usersList.size(); i++) {
+            User user = usersList.get(i);
+            boolean isCurrent = currentUser != null && currentUser.getEmail().equals(user.getEmail());
+        %>
+        <tr <%= isCurrent ? "class='highlight'" : "" %>>
+            <td><%= i + 1 %></td>
+            <td><%= user.getNom() %></td>
+            <td><%= user.getEmail() %></td>
+        </tr>
+        <% } %>
+    </table>
+    <% } else { %>
+    <p>Aucun utilisateur enregistré.</p>
+    <% } %>
+    <p><a href="userForm.jsp">Ajouter un utilisateur</a></p>
+    <p><a href="index.jsp">Retour à l'accueil</a></p>
+</div>
+</body>
+</html>

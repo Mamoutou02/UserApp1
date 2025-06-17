@@ -2,12 +2,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>JSP - Hello World</title>
+  <title>Accueil</title>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
-<h1><%= "Bonjour" %>
-</h1>
-<br/>
-<a href="userForm.jsp">Hello Servlet</a>
+<div class="container">
+  <h2>Bienvenue</h2>
+  <p><a href="userForm.jsp">Accéder au formulaire utilisateur</a></p>
+</div>
 </body>
 </html>
